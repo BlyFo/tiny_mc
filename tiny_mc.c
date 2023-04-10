@@ -25,7 +25,12 @@ char t3[] = "CPU version, adapted for PEAGPGPU by Gustavo Castellano"
 static float heat[SHELLS];
 static float heat2[SHELLS];
 
+unsigned int randomNumberSeed = 0;
 
+inline unsigned int randomNumber() {
+    randomNumberSeed = (randomNumberSeed * 214013 + 2531011) & RAND_MAX;
+    return randomNumberSeed;
+}
 /***
  * Photon
  ***/
@@ -45,7 +50,8 @@ static void photon(void)
     float weight = 1.0f;
 
     for (;;) {
-        float t = -logf(rand() / (float)RAND_MAX); /* move */
+        //float t = -logf(rand() / (float)RAND_MAX); /* move */
+        float t = -logf( randomNumber() / (float)RAND_MAX); /* move */
         x += t * u;
         y += t * v;
         z += t * w;
@@ -61,8 +67,10 @@ static void photon(void)
         /* New direction, rejection method */
         float xi1, xi2;
         do {
-            xi1 = 2.0f * rand() / (float)RAND_MAX - 1.0f;
-            xi2 = 2.0f * rand() / (float)RAND_MAX - 1.0f;
+            //xi1 = 2.0f * rand() / (float)RAND_MAX - 1.0f;
+            //xi2 = 2.0f * rand() / (float)RAND_MAX - 1.0f;
+            xi1 = 2.0f * randomNumber() / (float)RAND_MAX - 1.0f;
+            xi2 = 2.0f * randomNumber() / (float)RAND_MAX - 1.0f;
             t = xi1 * xi1 + xi2 * xi2;
         } while (1.0f < t);
         u = 2.0f * t - 1.0f;
@@ -70,7 +78,8 @@ static void photon(void)
         w = xi2 * sqrtf((1.0f - u * u) / t);
 
         if (weight < 0.001f) { /* roulette */
-            if (rand() / (float)RAND_MAX > 0.1f)
+            //if (rand() / (float)RAND_MAX > 0.1f)
+            if (randomNumber() / (float)RAND_MAX > 0.1f)
                 break;
             weight /= 0.1f;
         }
