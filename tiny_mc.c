@@ -27,7 +27,7 @@ static float heat2[SHELLS];
 
 unsigned int randomNumberSeed = 0;
 
-inline unsigned int randomNumber() {
+unsigned int randomNumber() {
     randomNumberSeed = (randomNumberSeed * 214013 + 2531011) & RAND_MAX;
     return randomNumberSeed;
 }

@@ -34,6 +34,14 @@ def perfStats(i):
   print("-->Done")
   return instructionsPerSecond
 
+def perfStatsLinares(i):
+  print("\n->Getting stats from perf stats")
+  os.system(f"sudo perf stat -o {FILE_NAME} -r {i} ./tiny_mc > /dev/null")
+  file = open(FILE_NAME)
+  content = file.readlines()
+  instructionsPerSecond = content[12].split("#")[1].split(" ")[4].replace(",",".")
+  return instructionsPerSecond
+
 def writeInfo(a,b):
   print(f"\n->Writting info in {DATA_FILE_NAME}")
   existFile = os.path.isfile("./"+DATA_FILE_NAME)
